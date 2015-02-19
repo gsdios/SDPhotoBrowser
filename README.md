@@ -3,12 +3,19 @@ A image browser which is easy for using.
 非常简单易用的图片浏览器，模仿微博图片浏览器动感效果，综合了图片展示和存储等多项功能。
 
 1. 创建SDPhotoBrowser实例
-SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
-browser.sourceImagesContainerView = 原图的父控件;
-browser.imageCount = 原图的数量;
-browser.currentImageIndex = 当前需要展示图片的index;
-browser.delegate = 代理;
-[browser show];  // 展示图片浏览器
+
+  SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
+
+  browser.sourceImagesContainerView = 原图的父控件;
+
+  browser.imageCount = 原图的数量;
+
+  browser.currentImageIndex = 当前需要展示图片的index;
+
+  browser.delegate = 代理;
+
+  [browser show];  // 展示图片浏览器
+
 
 2.实现代理方法
 
