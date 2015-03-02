@@ -20,7 +20,6 @@
 		9973FADD1A824A1F0089A512 /* SDPhotoBrowserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9973FADC1A824A1F0089A512 /* SDPhotoBrowserTests.m */; };
 		9973FAE91A824A800089A512 /* SDNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9973FAE81A824A800089A512 /* SDNavigationController.m */; };
 		9973FB211A824CA70089A512 /* SDPhotoItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9973FB201A824CA70089A512 /* SDPhotoItem.m */; };
-		999B96D91AA4A13900099735 /* .DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 999B96B71AA4A13900099735 /* .DS_Store */; };
 		999B96DA1AA4A13900099735 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 999B96B91AA4A13900099735 /* MKAnnotationView+WebCache.m */; };
 		999B96DB1AA4A13900099735 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 999B96BB1AA4A13900099735 /* NSData+ImageContentType.m */; };
 		999B96DC1AA4A13900099735 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 999B96BD1AA4A13900099735 /* SDImageCache.m */; };
@@ -76,7 +75,6 @@
 		9973FAEA1A824A9F0089A512 /* SDTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDTableViewController.h; sourceTree = "<group>"; };
 		9973FB1F1A824CA70089A512 /* SDPhotoItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoItem.h; sourceTree = "<group>"; };
 		9973FB201A824CA70089A512 /* SDPhotoItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPhotoItem.m; sourceTree = "<group>"; };
-		999B96B71AA4A13900099735 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; path = .DS_Store; sourceTree = "<group>"; };
 		999B96B81AA4A13900099735 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		999B96B91AA4A13900099735 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		999B96BA1AA4A13900099735 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -121,6 +119,7 @@
 		999B96F71AA4A2EA00099735 /* SDTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDTableViewController.m; sourceTree = "<group>"; };
 		999B96F91AA4A31C00099735 /* SDPhotoGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoGroup.h; sourceTree = "<group>"; };
 		999B96FA1AA4A31C00099735 /* SDPhotoGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPhotoGroup.m; sourceTree = "<group>"; };
+		999B96FC1AA4A6CB00099735 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,7 +269,7 @@
 		999B96B61AA4A11E00099735 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
-				999B96B71AA4A13900099735 /* .DS_Store */,
+				999B96FC1AA4A6CB00099735 /* MKAnnotationView+WebCache.h */,
 				999B96B81AA4A13900099735 /* MKAnnotationView+WebCache.h */,
 				999B96B91AA4A13900099735 /* MKAnnotationView+WebCache.m */,
 				999B96BA1AA4A13900099735 /* NSData+ImageContentType.h */,
@@ -400,7 +399,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9973FACA1A824A1F0089A512 /* Images.xcassets in Resources */,
-				999B96D91AA4A13900099735 /* .DS_Store in Resources */,
 				9973FABC1A824A1E0089A512 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
