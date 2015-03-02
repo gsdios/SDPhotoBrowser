@@ -14,11 +14,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UIWindow *window = [[UIWindow alloc] init];
-    window.backgroundColor = [UIColor whiteColor];
+    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
     SDNavigationController *nav = [[SDNavigationController alloc] initWithRootViewController:[[SDTableViewController alloc] init]];
-    window.rootViewController = nav;
-    [window makeKeyAndVisible];
+    self.window.rootViewController = nav;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							

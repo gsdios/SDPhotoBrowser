@@ -16,6 +16,9 @@
     BOOL _didCheckSize;
     UIScrollView *_scroll;
     UIImageView *_scrollImageView;
+    UIScrollView *_zoomingScroolView;
+    UIImageView *_zoomingImageView;
+    CGFloat _totalScale;
 }
 
 
@@ -25,8 +28,18 @@
     if (self) {
         self.userInteractionEnabled = YES;
         self.contentMode = UIViewContentModeScaleAspectFit;
+        _totalScale = 1.0;
+        
+        // 捏合手势缩放图片
+        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
+        [self addGestureRecognizer:pinch];
     }
     return self;
+}
+
+- (BOOL)isScaled
+{
+    return  1.0 != _totalScale;
 }
 
 - (void)layoutSubviews
@@ -74,11 +87,11 @@
     
     __weak SDBrowserImageView *imageViewWeak = self;
 
-    [self setImageWithURL:url placeholderImage:placeholder options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    [self sd_setImageWithURL:url placeholderImage:placeholder options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
         
         imageViewWeak.progress = (CGFloat)receivedSize / expectedSize;
         
-    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType) {
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         
         [imageViewWeak removeWaitingView];
         
@@ -95,7 +108,48 @@
             label.textAlignment = NSTextAlignmentCenter;
             [imageViewWeak addSubview:label];
         }
+   
     }];
+}
+
+- (void)zoomImage:(UIPinchGestureRecognizer *)recognizer
+{
+    if (!_zoomingScroolView) {
+        _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
+        UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
+        zoomingImageView.center = _zoomingScroolView.center;
+        zoomingImageView.bounds = self.bounds;
+        zoomingImageView.contentMode = UIViewContentModeScaleAspectFill;
+        _zoomingImageView = zoomingImageView;
+        [_zoomingScroolView addSubview:zoomingImageView];
+        [self addSubview:_zoomingScroolView];
+    }
+    CGFloat scale = recognizer.scale;
+    CGFloat temp = _totalScale + (scale - 1);
+    [self setTotalScale:temp];
+    recognizer.scale = 1.0;
+}
+
+- (void)setTotalScale:(CGFloat)totalScale
+{
+    if ((_totalScale < 0.5 && totalScale < _totalScale) || (_totalScale > 2.0 && totalScale > _totalScale)) return; // 最大缩放 2倍,最小0.5倍
+    
+    _totalScale = totalScale;
+    
+    _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
+    CGFloat sizeW = MAX(_zoomingScroolView.bounds.size.width, _zoomingImageView.bounds.size.width * totalScale);
+    CGFloat sizeH = MAX(_zoomingScroolView.bounds.size.height, _zoomingImageView.bounds.size.height * totalScale);
+    _zoomingScroolView.contentSize = CGSizeMake(sizeW, sizeH);
+}
+
+// 清除缩放
+- (void)eliminateScale
+{
+    [_zoomingScroolView removeFromSuperview];
+    _zoomingScroolView = nil;
+    _zoomingImageView = nil;
+    _totalScale = 1.0;
 }
 
 - (void)removeWaitingView

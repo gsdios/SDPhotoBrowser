@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F36905B1-586E-4795-9111-8E66C6554693</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SDPhotoBrowser</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E2142CC108011EA23F4FC3B418C7BBE8DBAF5852</key>
+		<string>https://github.com/gsdios/SDPhotoBrowser.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SDPhotoBrowser.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E2142CC108011EA23F4FC3B418C7BBE8DBAF5852</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/gsdios/SDPhotoBrowser.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E2142CC108011EA23F4FC3B418C7BBE8DBAF5852</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E2142CC108011EA23F4FC3B418C7BBE8DBAF5852</string>
+			<key>IDESourceControlWCCName</key>
+			<string>photoBrowser</string>
+		</dict>
+	</array>
+</dict>
+</plist>

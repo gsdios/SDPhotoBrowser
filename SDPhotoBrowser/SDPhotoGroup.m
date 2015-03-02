@@ -11,7 +11,7 @@
 #import "UIButton+WebCache.h"
 #import "SDPhotoBrowser.h"
 
-#define SDPhotoGroupImageMargin 20
+#define SDPhotoGroupImageMargin 15
 
 @interface SDPhotoGroup () <SDPhotoBrowserDelegate>
 
@@ -35,7 +35,7 @@
     _photoItemArray = photoItemArray;
     [photoItemArray enumerateObjectsUsingBlock:^(SDPhotoItem *obj, NSUInteger idx, BOOL *stop) {
         UIButton *btn = [[UIButton alloc] init];
-        [btn setImageWithURL:[NSURL URLWithString:obj.thumbnail_pic] forState:UIControlStateNormal];
+        [btn sd_setImageWithURL:[NSURL URLWithString:obj.thumbnail_pic] forState:UIControlStateNormal];
         
         
         btn.tag = idx;
@@ -52,8 +52,8 @@
     int perRowImageCount = ((imageCount == 4) ? 2 : 3);
     
     int totalRowCount = imageCount / perRowImageCount + 0.99999; // ((imageCount + perRowImageCount - 1) / perRowImageCount)
-    CGFloat w = 60;
-    CGFloat h = 60;
+    CGFloat w = 80;
+    CGFloat h = 80;
     
     [self.subviews enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
         

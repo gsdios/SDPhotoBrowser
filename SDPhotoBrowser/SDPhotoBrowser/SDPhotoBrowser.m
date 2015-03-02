@@ -60,7 +60,7 @@
     indexLabel.font = [UIFont boldSystemFontOfSize:20];
     indexLabel.backgroundColor = [UIColor clearColor];
     if (self.imageCount > 1) {
-        indexLabel.text = [NSString stringWithFormat:@"1/%d", self.imageCount];
+        indexLabel.text = [NSString stringWithFormat:@"1/%ld", (long)self.imageCount];
     }
     _indexLabel = indexLabel;
     [self addSubview:indexLabel];
@@ -138,6 +138,7 @@
     
 }
 
+// 加载图片
 - (void)setupImageOfImageViewForIndex:(NSInteger)index
 {
     SDBrowserImageView *imageView = _scrollView.subviews[index];
@@ -272,8 +273,26 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = (scrollView.contentOffset.x + _scrollView.bounds.size.width * 0.5) / _scrollView.bounds.size.width;
-    _indexLabel.text = [NSString stringWithFormat:@"%d/%d", index + 1, self.imageCount];
+    
+    // 有过缩放的图片在拖动100后清除缩放
+    CGFloat margin = 100.0;
+    CGFloat x = scrollView.contentOffset.x;
+    if ((x - index * self.bounds.size.width) > margin || (x - index * self.bounds.size.width) < - margin) {
+        SDBrowserImageView *imageView = _scrollView.subviews[index];
+        if (imageView.isScaled) {
+            [UIView animateWithDuration:0.5 animations:^{
+                imageView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                [imageView eliminateScale];
+            }];
+        }
+    }
+    
+    
+    _indexLabel.text = [NSString stringWithFormat:@"%d/%ld", index + 1, (long)self.imageCount];
     [self setupImageOfImageViewForIndex:index];
 }
+
+
 
 @end
