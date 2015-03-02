@@ -118,12 +118,14 @@
         _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
         UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
-        zoomingImageView.center = _zoomingScroolView.center;
         zoomingImageView.bounds = self.bounds;
         zoomingImageView.contentMode = UIViewContentModeScaleAspectFill;
         _zoomingImageView = zoomingImageView;
         [_zoomingScroolView addSubview:zoomingImageView];
         [self addSubview:_zoomingScroolView];
+        
+        _zoomingScroolView.contentSize = CGSizeMake(zoomingImageView.bounds.size.width * 2, zoomingImageView.bounds.size.height * 1.5);
+        _zoomingScroolView.contentInset = UIEdgeInsetsMake(zoomingImageView.bounds.size.height, zoomingImageView.bounds.size.width, 0, 0);
     }
     CGFloat scale = recognizer.scale;
     CGFloat temp = _totalScale + (scale - 1);
@@ -138,9 +140,6 @@
     _totalScale = totalScale;
     
     _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
-    CGFloat sizeW = MAX(_zoomingScroolView.bounds.size.width, _zoomingImageView.bounds.size.width * totalScale);
-    CGFloat sizeH = MAX(_zoomingScroolView.bounds.size.height, _zoomingImageView.bounds.size.height * totalScale);
-    _zoomingScroolView.contentSize = CGSizeMake(sizeW, sizeH);
 }
 
 // 清除缩放
