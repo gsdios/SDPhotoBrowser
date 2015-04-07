@@ -123,9 +123,6 @@
         _zoomingImageView = zoomingImageView;
         [_zoomingScroolView addSubview:zoomingImageView];
         [self addSubview:_zoomingScroolView];
-        
-        _zoomingScroolView.contentSize = CGSizeMake(zoomingImageView.bounds.size.width * 2, zoomingImageView.bounds.size.height * 1.5);
-        _zoomingScroolView.contentInset = UIEdgeInsetsMake(zoomingImageView.bounds.size.height, zoomingImageView.bounds.size.width, 0, 0);
     }
     CGFloat scale = recognizer.scale;
     CGFloat temp = _totalScale + (scale - 1);
@@ -140,6 +137,15 @@
     _totalScale = totalScale;
     
     _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
+    
+    if (totalScale > 1) {
+        _zoomingScroolView.contentSize = _zoomingImageView.frame.size;
+        _zoomingScroolView.contentInset = UIEdgeInsetsMake(_zoomingImageView.bounds.size.height, _zoomingImageView.bounds.size.width, 0, 0);
+    } else {
+        _zoomingScroolView.contentSize = _zoomingScroolView.frame.size;
+        _zoomingScroolView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        _zoomingImageView.center = _zoomingScroolView.center;
+    }
 }
 
 // 清除缩放

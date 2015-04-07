@@ -274,8 +274,8 @@
 {
     int index = (scrollView.contentOffset.x + _scrollView.bounds.size.width * 0.5) / _scrollView.bounds.size.width;
     
-    // 有过缩放的图片在拖动100后清除缩放
-    CGFloat margin = 100.0;
+    // 有过缩放的图片在拖动一定距离后清除缩放
+    CGFloat margin = 150;
     CGFloat x = scrollView.contentOffset.x;
     if ((x - index * self.bounds.size.width) > margin || (x - index * self.bounds.size.width) < - margin) {
         SDBrowserImageView *imageView = _scrollView.subviews[index];
