@@ -60,9 +60,11 @@
             scroll.backgroundColor = SDPhotoBrowserBackgrounColor;
             _scroll = scroll;
             [self addSubview:scroll];
-            self.contentMode = UIViewContentModeScaleToFill;
         }
+    } else {
+        if (_scroll) [_scroll removeFromSuperview]; // 防止旋转时适配的scrollView的影响
     }
+    
     
     _scroll.contentSize = CGSizeMake(0, self.image.size.height);
 }

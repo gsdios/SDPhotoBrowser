@@ -49,12 +49,16 @@
     [self setupToolbars];
 }
 
+- (void)dealloc
+{
+    [[UIApplication sharedApplication].keyWindow removeObserver:self forKeyPath:@"frame"];
+}
+
 - (void)setupToolbars
 {
     // 1. 序标
     UILabel *indexLabel = [[UILabel alloc] init];
     indexLabel.bounds = CGRectMake(0, 0, 80, 30);
-    indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 30);
     indexLabel.textAlignment = NSTextAlignmentCenter;
     indexLabel.textColor = [UIColor whiteColor];
     indexLabel.font = [UIFont boldSystemFontOfSize:20];
@@ -70,7 +74,6 @@
     [saveButton setTitle:@"保存" forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     saveButton.backgroundColor = [UIColor colorWithRed:0.1f green:0.1f blue:0.1f alpha:0.90f];
-    saveButton.frame = CGRectMake(30, self.bounds.size.height - 70, 50, 25);
     saveButton.layer.cornerRadius = 5;
     saveButton.clipsToBounds = YES;
     [saveButton addTarget:self action:@selector(saveImage) forControlEvents:UIControlEventTouchUpInside];
@@ -122,8 +125,8 @@
     _scrollView.delegate = self;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.pagingEnabled = YES;
     [self addSubview:_scrollView];
-    
     
     for (int i = 0; i < self.imageCount; i++) {
         SDBrowserImageView *imageView = [[SDBrowserImageView alloc] init];
@@ -131,8 +134,6 @@
         [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
         [_scrollView addSubview:imageView];
     }
-    
-    
     
     [self setupImageOfImageViewForIndex:self.currentImageIndex];
     
@@ -195,11 +196,10 @@
     _scrollView.center = self.center;
     
     CGFloat y = SDPhotoBrowserImageViewMargin;
-    CGFloat w = _scrollView.frame.size.width - SDPhotoBrowserImageViewMargin * 2;
+    __block CGFloat w = _scrollView.frame.size.width - SDPhotoBrowserImageViewMargin * 2;
     CGFloat h = _scrollView.frame.size.height - SDPhotoBrowserImageViewMargin * 2;
     
-    _scrollView.showsHorizontalScrollIndicator = NO;
-    _scrollView.showsVerticalScrollIndicator = NO;
+    
     
     [_scrollView.subviews enumerateObjectsUsingBlock:^(SDBrowserImageView *obj, NSUInteger idx, BOOL *stop) {
         CGFloat x = SDPhotoBrowserImageViewMargin + idx * (SDPhotoBrowserImageViewMargin * 2 + w);
@@ -208,25 +208,33 @@
     
     _scrollView.contentSize = CGSizeMake(_scrollView.subviews.count * _scrollView.frame.size.width, 0);
     _scrollView.contentOffset = CGPointMake(self.currentImageIndex * _scrollView.frame.size.width, 0);
-    _scrollView.pagingEnabled = YES;
+    
     
     if (!_hasShowedFistView) {
         [self showFirstImage];
     }
     
+    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 30);
+    _saveButton.frame = CGRectMake(30, self.bounds.size.height - 70, 50, 25);
 }
 
 - (void)show
 {
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     self.frame = window.bounds;
+    [window addObserver:self forKeyPath:@"frame" options:0 context:nil];
     [window addSubview:self];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(UIView *)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"frame"]) {
+        self.frame = object.bounds;
+    }
 }
 
 - (void)showFirstImage
 {
-    
-    
     UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentImageIndex];
     CGRect rect = [self.sourceImagesContainerView convertRect:sourceView.frame toView:self];
     
