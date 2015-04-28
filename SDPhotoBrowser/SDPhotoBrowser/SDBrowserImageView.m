@@ -10,6 +10,8 @@
 #import "UIImageView+WebCache.h"
 #import "SDPhotoBrowserConfig.h"
 
+static const CGFloat kBrowserImageViewWidth = 320;
+
 @implementation SDBrowserImageView
 {
     SDWaitingView *_waitingView;
@@ -50,23 +52,26 @@
     if (self.image.size.height > self.bounds.size.height) {
         if (!_scroll) {
             UIScrollView *scroll = [[UIScrollView alloc] init];
-            scroll.frame = self.bounds;
             scroll.backgroundColor = [UIColor whiteColor];
             UIImageView *imageView = [[UIImageView alloc] init];
             imageView.image = self.image;
             _scrollImageView = imageView;
             [scroll addSubview:imageView];
-            imageView.frame = CGRectMake(0, 0, scroll.bounds.size.width, self.image.size.height);
             scroll.backgroundColor = SDPhotoBrowserBackgrounColor;
             _scroll = scroll;
             [self addSubview:scroll];
         }
+        _scroll.frame = self.bounds;
+        _scrollImageView.bounds = CGRectMake(0, 0, kBrowserImageViewWidth, self.image.size.height);
+        _scrollImageView.center = CGPointMake(_scroll.frame.size.width * 0.5, _scrollImageView.frame.size.height * 0.5);
+        _scroll.contentSize = CGSizeMake(0, self.image.size.height);
+        
+        
     } else {
         if (_scroll) [_scroll removeFromSuperview]; // 防止旋转时适配的scrollView的影响
     }
     
     
-    _scroll.contentSize = CGSizeMake(0, self.image.size.height);
 }
 
 
