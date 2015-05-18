@@ -37,7 +37,6 @@ typedef enum {
 #define SDWaitingViewBackgroundColor [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7]
 
 // 图片下载进度指示器内部控件间的间距
-
 #define SDWaitingViewItemMargin 10
 
 

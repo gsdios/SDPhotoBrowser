@@ -10,7 +10,7 @@
 #import "SDWaitingView.h"
 
 
-@interface SDBrowserImageView : UIImageView
+@interface SDBrowserImageView : UIImageView <UIGestureRecognizerDelegate>
 
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, assign, readonly) BOOL isScaled;
@@ -19,5 +19,9 @@
 - (void)eliminateScale; // 清除缩放
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
+
+- (void)scaleImage:(CGFloat)scale;
+
+- (void)clear;
 
 @end

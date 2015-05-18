@@ -34,7 +34,11 @@ static const CGFloat kBrowserImageViewWidth = 320;
         
         // 捏合手势缩放图片
         UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(zoomImage:)];
+        pinch.delegate = self;
         [self addGestureRecognizer:pinch];
+        
+
+    
     }
     return self;
 }
@@ -95,7 +99,6 @@ static const CGFloat kBrowserImageViewWidth = 320;
     __weak SDBrowserImageView *imageViewWeak = self;
 
     [self sd_setImageWithURL:url placeholderImage:placeholder options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        
         imageViewWeak.progress = (CGFloat)receivedSize / expectedSize;
         
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -121,16 +124,7 @@ static const CGFloat kBrowserImageViewWidth = 320;
 
 - (void)zoomImage:(UIPinchGestureRecognizer *)recognizer
 {
-    if (!_zoomingScroolView) {
-        _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
-        _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
-        UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
-        zoomingImageView.bounds = self.bounds;
-        zoomingImageView.contentMode = UIViewContentModeScaleAspectFill;
-        _zoomingImageView = zoomingImageView;
-        [_zoomingScroolView addSubview:zoomingImageView];
-        [self addSubview:_zoomingScroolView];
-    }
+    [self prepareForImageViewScaling];
     CGFloat scale = recognizer.scale;
     CGFloat temp = _totalScale + (scale - 1);
     [self setTotalScale:temp];
@@ -146,8 +140,9 @@ static const CGFloat kBrowserImageViewWidth = 320;
     _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
     
     if (totalScale > 1) {
-        _zoomingScroolView.contentSize = _zoomingImageView.frame.size;
-        _zoomingScroolView.contentInset = UIEdgeInsetsMake(_zoomingImageView.bounds.size.height, _zoomingImageView.bounds.size.width, 0, 0);
+        CGFloat percent = [UIScreen mainScreen].bounds.size.height / [UIScreen mainScreen].bounds.size.width;
+        _zoomingScroolView.contentSize = CGSizeMake(_zoomingImageView.frame.size.width, _zoomingImageView.frame.size.width * percent);
+        _zoomingScroolView.contentInset = UIEdgeInsetsMake(_zoomingImageView.bounds.size.height * totalScale * 0.15, _zoomingImageView.bounds.size.height * totalScale * 0.15, - _zoomingImageView.bounds.size.height * totalScale * 0.4, 0);
     } else {
         _zoomingScroolView.contentSize = _zoomingScroolView.frame.size;
         _zoomingScroolView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -155,19 +150,47 @@ static const CGFloat kBrowserImageViewWidth = 320;
     }
 }
 
+- (void)prepareForImageViewScaling
+{
+    if (!_zoomingScroolView) {
+        _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
+        _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
+        UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
+        zoomingImageView.bounds = self.bounds;
+        zoomingImageView.contentMode = UIViewContentModeScaleAspectFit;
+        _zoomingImageView = zoomingImageView;
+        [_zoomingScroolView addSubview:zoomingImageView];
+        [self addSubview:_zoomingScroolView];
+    }
+}
+
+- (void)scaleImage:(CGFloat)scale
+{
+    [self prepareForImageViewScaling];
+    [self setTotalScale:scale]; 
+}
+
 // 清除缩放
 - (void)eliminateScale
+{
+    [self clear];
+    _totalScale = 1.0;
+}
+
+- (void)clear
 {
     [_zoomingScroolView removeFromSuperview];
     _zoomingScroolView = nil;
     _zoomingImageView = nil;
-    _totalScale = 1.0;
+
 }
 
 - (void)removeWaitingView
 {
     [_waitingView removeFromSuperview];
 }
+
+
 
 
 @end

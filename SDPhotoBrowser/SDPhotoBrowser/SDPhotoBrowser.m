@@ -27,6 +27,7 @@
 {
     UIScrollView *_scrollView;
     BOOL _hasShowedFistView;
+    BOOL _hasScaleled;
     UILabel *_indexLabel;
     UIButton *_saveButton;
     UIActivityIndicatorView *_indicatorView;
@@ -131,7 +132,19 @@
     for (int i = 0; i < self.imageCount; i++) {
         SDBrowserImageView *imageView = [[SDBrowserImageView alloc] init];
         imageView.tag = i;
-        [imageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)]];
+
+        // 单击图片
+        UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(photoClick:)];
+        
+        // 双击放大图片
+        UITapGestureRecognizer *doubleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewDoubleTaped:)];
+        doubleTap.numberOfTapsRequired = 2;
+        [self addGestureRecognizer:doubleTap];
+        
+        [singleTap requireGestureRecognizerToFail:doubleTap];
+        
+        [imageView addGestureRecognizer:singleTap];
+        [imageView addGestureRecognizer:doubleTap];
         [_scrollView addSubview:imageView];
     }
     
@@ -182,6 +195,26 @@
         self.backgroundColor = [UIColor clearColor];
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
+    }];
+}
+
+- (void)imageViewDoubleTaped:(UITapGestureRecognizer *)recognizer
+{
+    CGFloat scale;
+    if (_hasScaleled) {
+        scale = 1.0;
+    } else {
+        scale = 2.0;
+    }
+    _hasScaleled = !_hasScaleled;
+    
+    SDBrowserImageView *view = (SDBrowserImageView *)recognizer.view;
+    [UIView animateWithDuration:0.5 animations:^{
+        [view scaleImage:scale];
+    } completion:^(BOOL finished) {
+        if (scale == 1) {
+            [view clear];
+        }
     }];
 }
 
