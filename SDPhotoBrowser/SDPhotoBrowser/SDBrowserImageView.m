@@ -53,7 +53,9 @@ static const CGFloat kBrowserImageViewWidth = 320;
     [super layoutSubviews];
     _waitingView.center = CGPointMake(self.frame.size.width * 0.5, self.frame.size.height * 0.5);
     
-    if (self.image.size.height > self.bounds.size.height) {
+    CGSize imageSize = self.image.size;
+    
+    if (self.bounds.size.width * (imageSize.height / imageSize.width) > self.bounds.size.height) {
         if (!_scroll) {
             UIScrollView *scroll = [[UIScrollView alloc] init];
             scroll.backgroundColor = [UIColor whiteColor];
@@ -66,10 +68,15 @@ static const CGFloat kBrowserImageViewWidth = 320;
             [self addSubview:scroll];
         }
         _scroll.frame = self.bounds;
-        _scrollImageView.bounds = CGRectMake(0, 0, kBrowserImageViewWidth, self.image.size.height);
-        _scrollImageView.center = CGPointMake(_scroll.frame.size.width * 0.5, _scrollImageView.frame.size.height * 0.5);
-        _scroll.contentSize = CGSizeMake(0, self.image.size.height);
         
+
+        CGFloat imageViewH = self.bounds.size.width * (imageSize.height / imageSize.width);
+
+        _scrollImageView.bounds = CGRectMake(0, 0, kBrowserImageViewWidth, imageViewH);
+        _scrollImageView.center = CGPointMake(_scroll.frame.size.width * 0.5, _scrollImageView.frame.size.height * 0.5);
+        _scroll.contentSize = CGSizeMake(0, _scrollImageView.bounds.size.height);
+        
+
         
     } else {
         if (_scroll) [_scroll removeFromSuperview]; // 防止旋转时适配的scrollView的影响
@@ -140,9 +147,13 @@ static const CGFloat kBrowserImageViewWidth = 320;
     _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
     
     if (totalScale > 1) {
-        CGFloat percent = [UIScreen mainScreen].bounds.size.height / [UIScreen mainScreen].bounds.size.width;
-        _zoomingScroolView.contentSize = CGSizeMake(_zoomingImageView.frame.size.width, _zoomingImageView.frame.size.width * percent);
-        _zoomingScroolView.contentInset = UIEdgeInsetsMake(_zoomingImageView.bounds.size.height * totalScale * 0.15, _zoomingImageView.bounds.size.height * totalScale * 0.15, - _zoomingImageView.bounds.size.height * totalScale * 0.4, 0);
+        CGFloat contentW = _zoomingImageView.frame.size.width;
+        CGFloat contentH = MAX(_zoomingImageView.frame.size.height, self.frame.size.height);
+        
+        
+        _zoomingScroolView.contentSize = CGSizeMake(contentW, contentH);
+        _zoomingImageView.center = CGPointMake(contentW * 0.5, contentH * 0.5);
+        
     } else {
         _zoomingScroolView.contentSize = _zoomingScroolView.frame.size;
         _zoomingScroolView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
@@ -156,7 +167,13 @@ static const CGFloat kBrowserImageViewWidth = 320;
         _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
         UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
-        zoomingImageView.bounds = self.bounds;
+        CGSize imageSize = zoomingImageView.image.size;
+        CGFloat imageViewH = self.bounds.size.height;
+        if (imageSize.width > 0) {
+            imageViewH = self.bounds.size.width * (imageSize.height / imageSize.width);
+        }
+        zoomingImageView.bounds = CGRectMake(0, 0, self.bounds.size.width, imageViewH);
+        zoomingImageView.center = _zoomingScroolView.center;
         zoomingImageView.contentMode = UIViewContentModeScaleAspectFit;
         _zoomingImageView = zoomingImageView;
         [_zoomingScroolView addSubview:zoomingImageView];
