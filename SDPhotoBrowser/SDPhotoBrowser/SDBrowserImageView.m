@@ -14,7 +14,7 @@ static const CGFloat kBrowserImageViewWidth = 320;
 
 @implementation SDBrowserImageView
 {
-    SDWaitingView *_waitingView;
+    __weak SDWaitingView *_waitingView;
     BOOL _didCheckSize;
     UIScrollView *_scroll;
     UIImageView *_scrollImageView;
@@ -66,17 +66,17 @@ static const CGFloat kBrowserImageViewWidth = 320;
             scroll.backgroundColor = SDPhotoBrowserBackgrounColor;
             _scroll = scroll;
             [self addSubview:scroll];
+            if (_waitingView) {
+                [self bringSubviewToFront:_waitingView];
+            }
         }
         _scroll.frame = self.bounds;
-        
 
         CGFloat imageViewH = self.bounds.size.width * (imageSize.height / imageSize.width);
 
         _scrollImageView.bounds = CGRectMake(0, 0, kBrowserImageViewWidth, imageViewH);
         _scrollImageView.center = CGPointMake(_scroll.frame.size.width * 0.5, _scrollImageView.frame.size.height * 0.5);
         _scroll.contentSize = CGSizeMake(0, _scrollImageView.bounds.size.height);
-        
-
         
     } else {
         if (_scroll) [_scroll removeFromSuperview]; // 防止旋转时适配的scrollView的影响
@@ -109,8 +109,8 @@ static const CGFloat kBrowserImageViewWidth = 320;
         imageViewWeak.progress = (CGFloat)receivedSize / expectedSize;
         
     } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        
         [imageViewWeak removeWaitingView];
+        
         
         if (error) {
             UILabel *label = [[UILabel alloc] init];
@@ -124,6 +124,9 @@ static const CGFloat kBrowserImageViewWidth = 320;
             label.clipsToBounds = YES;
             label.textAlignment = NSTextAlignmentCenter;
             [imageViewWeak addSubview:label];
+        } else {
+            _scrollImageView.image = image;
+            [_scrollImageView setNeedsDisplay];
         }
    
     }];
@@ -142,17 +145,27 @@ static const CGFloat kBrowserImageViewWidth = 320;
 {
     if ((_totalScale < 0.5 && totalScale < _totalScale) || (_totalScale > 2.0 && totalScale > _totalScale)) return; // 最大缩放 2倍,最小0.5倍
     
-    _totalScale = totalScale;
+    [self zoomWithScale:totalScale];
+}
+
+- (void)zoomWithScale:(CGFloat)scale
+{
+    _totalScale = scale;
     
-    _zoomingImageView.transform = CGAffineTransformMakeScale(totalScale, totalScale);
+    _zoomingImageView.transform = CGAffineTransformMakeScale(scale, scale);
     
-    if (totalScale > 1) {
+    if (scale > 1) {
         CGFloat contentW = _zoomingImageView.frame.size.width;
         CGFloat contentH = MAX(_zoomingImageView.frame.size.height, self.frame.size.height);
         
-        
-        _zoomingScroolView.contentSize = CGSizeMake(contentW, contentH);
         _zoomingImageView.center = CGPointMake(contentW * 0.5, contentH * 0.5);
+        _zoomingScroolView.contentSize = CGSizeMake(contentW, contentH);
+
+        
+        CGPoint offset = _zoomingScroolView.contentOffset;
+        offset.x = (contentW - _zoomingScroolView.frame.size.width) * 0.5;
+//        offset.y = (contentH - _zoomingImageView.frame.size.height) * 0.5;
+        _zoomingScroolView.contentOffset = offset;
         
     } else {
         _zoomingScroolView.contentSize = _zoomingScroolView.frame.size;
@@ -161,11 +174,20 @@ static const CGFloat kBrowserImageViewWidth = 320;
     }
 }
 
+- (void)doubleTapTOZommWithScale:(CGFloat)scale
+{
+    [self prepareForImageViewScaling];
+    [UIView animateWithDuration:0.8 animations:^{
+        [self zoomWithScale:scale];
+    }];
+}
+
 - (void)prepareForImageViewScaling
 {
     if (!_zoomingScroolView) {
         _zoomingScroolView = [[UIScrollView alloc] initWithFrame:self.bounds];
         _zoomingScroolView.backgroundColor = SDPhotoBrowserBackgrounColor;
+        _zoomingScroolView.contentSize = self.bounds.size;
         UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
         CGSize imageSize = zoomingImageView.image.size;
         CGFloat imageViewH = self.bounds.size.height;
@@ -184,7 +206,7 @@ static const CGFloat kBrowserImageViewWidth = 320;
 - (void)scaleImage:(CGFloat)scale
 {
     [self prepareForImageViewScaling];
-    [self setTotalScale:scale]; 
+    [self setTotalScale:scale];
 }
 
 // 清除缩放

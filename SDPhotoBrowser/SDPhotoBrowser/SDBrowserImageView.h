@@ -20,7 +20,7 @@
 
 - (void)setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
-- (void)scaleImage:(CGFloat)scale;
+- (void)doubleTapTOZommWithScale:(CGFloat)scale;
 
 - (void)clear;
 

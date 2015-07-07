@@ -27,7 +27,6 @@
 {
     UIScrollView *_scrollView;
     BOOL _hasShowedFistView;
-    BOOL _hasScaleled;
     UILabel *_indexLabel;
     UIButton *_saveButton;
     UIActivityIndicatorView *_indicatorView;
@@ -63,7 +62,9 @@
     indexLabel.textAlignment = NSTextAlignmentCenter;
     indexLabel.textColor = [UIColor whiteColor];
     indexLabel.font = [UIFont boldSystemFontOfSize:20];
-    indexLabel.backgroundColor = [UIColor clearColor];
+    indexLabel.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
+    indexLabel.layer.cornerRadius = indexLabel.bounds.size.height * 0.5;
+    indexLabel.clipsToBounds = YES;
     if (self.imageCount > 1) {
         indexLabel.text = [NSString stringWithFormat:@"1/%ld", (long)self.imageCount];
     }
@@ -200,22 +201,21 @@
 
 - (void)imageViewDoubleTaped:(UITapGestureRecognizer *)recognizer
 {
+    SDBrowserImageView *imageView = (SDBrowserImageView *)recognizer.view;
     CGFloat scale;
-    if (_hasScaleled) {
+    if (imageView.isScaled) {
         scale = 1.0;
     } else {
         scale = 2.0;
     }
-    _hasScaleled = !_hasScaleled;
     
     SDBrowserImageView *view = (SDBrowserImageView *)recognizer.view;
-    [UIView animateWithDuration:0.5 animations:^{
-        [view scaleImage:scale];
-    } completion:^(BOOL finished) {
-        if (scale == 1) {
-            [view clear];
-        }
-    }];
+
+    [view doubleTapTOZommWithScale:scale];
+
+    if (scale == 1) {
+        [view clear];
+    }
 }
 
 - (void)layoutSubviews
@@ -228,9 +228,9 @@
     _scrollView.bounds = rect;
     _scrollView.center = self.center;
     
-    CGFloat y = SDPhotoBrowserImageViewMargin;
-    __block CGFloat w = _scrollView.frame.size.width - SDPhotoBrowserImageViewMargin * 2;
-    CGFloat h = _scrollView.frame.size.height - SDPhotoBrowserImageViewMargin * 2;
+    CGFloat y = 0;
+    CGFloat w = _scrollView.frame.size.width - SDPhotoBrowserImageViewMargin * 2;
+    CGFloat h = _scrollView.frame.size.height;
     
     
     
@@ -247,7 +247,7 @@
         [self showFirstImage];
     }
     
-    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 30);
+    _indexLabel.center = CGPointMake(self.bounds.size.width * 0.5, 35);
     _saveButton.frame = CGRectMake(30, self.bounds.size.height - 70, 50, 25);
 }
 
