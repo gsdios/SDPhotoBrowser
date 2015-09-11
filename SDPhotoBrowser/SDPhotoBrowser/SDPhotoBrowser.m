@@ -30,6 +30,7 @@
     UILabel *_indexLabel;
     UIButton *_saveButton;
     UIActivityIndicatorView *_indicatorView;
+    BOOL _willDisappear;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -169,6 +170,7 @@
 - (void)photoClick:(UITapGestureRecognizer *)recognizer
 {
     _scrollView.hidden = YES;
+    _willDisappear = YES;
     
     SDBrowserImageView *currentImageView = (SDBrowserImageView *)recognizer.view;
     NSInteger currentIndex = currentImageView.tag;
@@ -196,6 +198,7 @@
     [UIView animateWithDuration:SDPhotoBrowserHideImageAnimationDuration animations:^{
         tempView.frame = targetTemp;
         self.backgroundColor = [UIColor clearColor];
+        _indexLabel.alpha = 0.1;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
@@ -332,7 +335,9 @@
     }
     
     
-    _indexLabel.text = [NSString stringWithFormat:@"%d/%ld", index + 1, (long)self.imageCount];
+    if (!_willDisappear) {
+        _indexLabel.text = [NSString stringWithFormat:@"%d/%ld", index + 1, (long)self.imageCount];
+    }
     [self setupImageOfImageViewForIndex:index];
 }
 
