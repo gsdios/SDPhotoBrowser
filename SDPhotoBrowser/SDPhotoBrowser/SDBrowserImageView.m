@@ -10,8 +10,6 @@
 #import "UIImageView+WebCache.h"
 #import "SDPhotoBrowserConfig.h"
 
-static const CGFloat kBrowserImageViewWidth = 320;
-
 @implementation SDBrowserImageView
 {
     __weak SDWaitingView *_waitingView;
@@ -74,14 +72,13 @@ static const CGFloat kBrowserImageViewWidth = 320;
 
         CGFloat imageViewH = self.bounds.size.width * (imageSize.height / imageSize.width);
 
-        _scrollImageView.bounds = CGRectMake(0, 0, kBrowserImageViewWidth, imageViewH);
+        _scrollImageView.bounds = CGRectMake(0, 0, _scroll.frame.size.width, imageViewH);
         _scrollImageView.center = CGPointMake(_scroll.frame.size.width * 0.5, _scrollImageView.frame.size.height * 0.5);
         _scroll.contentSize = CGSizeMake(0, _scrollImageView.bounds.size.height);
         
     } else {
         if (_scroll) [_scroll removeFromSuperview]; // 防止旋转时适配的scrollView的影响
     }
-    
     
 }
 
@@ -174,11 +171,15 @@ static const CGFloat kBrowserImageViewWidth = 320;
     }
 }
 
-- (void)doubleTapTOZommWithScale:(CGFloat)scale
+- (void)doubleTapToZommWithScale:(CGFloat)scale
 {
     [self prepareForImageViewScaling];
-    [UIView animateWithDuration:0.8 animations:^{
+    [UIView animateWithDuration:0.5 animations:^{
         [self zoomWithScale:scale];
+    } completion:^(BOOL finished) {
+        if (scale == 1) {
+            [self clear];
+        }
     }];
 }
 

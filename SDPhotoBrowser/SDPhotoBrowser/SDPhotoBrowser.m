@@ -158,6 +158,7 @@
 - (void)setupImageOfImageViewForIndex:(NSInteger)index
 {
     SDBrowserImageView *imageView = _scrollView.subviews[index];
+    self.currentImageIndex = index;
     if (imageView.hasLoadedImage) return;
     if ([self highQualityImageURLForIndex:index]) {
         [imageView setImageWithURL:[self highQualityImageURLForIndex:index] placeholderImage:[self placeholderImageForIndex:index]];
@@ -216,11 +217,7 @@
     
     SDBrowserImageView *view = (SDBrowserImageView *)recognizer.view;
 
-    [view doubleTapTOZommWithScale:scale];
-
-    if (scale == 1) {
-        [view clear];
-    }
+    [view doubleTapToZommWithScale:scale];
 }
 
 - (void)layoutSubviews
