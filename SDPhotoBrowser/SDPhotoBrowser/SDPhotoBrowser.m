@@ -265,6 +265,10 @@
 {
     if ([keyPath isEqualToString:@"frame"]) {
         self.frame = object.bounds;
+        SDBrowserImageView *currentImageView = _scrollView.subviews[_currentImageIndex];
+        if ([currentImageView isKindOfClass:[SDBrowserImageView class]]) {
+            [currentImageView clear];
+        }
     }
 }
 
