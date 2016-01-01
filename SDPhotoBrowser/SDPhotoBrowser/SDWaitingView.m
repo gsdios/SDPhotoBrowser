@@ -34,10 +34,15 @@
 - (void)setProgress:(CGFloat)progress
 {
     _progress = progress;
-    [self setNeedsDisplay];
-    if (progress >= 1) {
-        [self removeFromSuperview];
-    }
+//    NSLog(@"%@",[NSThread currentThread]);
+    //将重绘操作放在主线程，解决自动布局控制台报错的问题
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self setNeedsDisplay];
+        if (progress >= 1) {
+            [self removeFromSuperview];
+        }
+    });
 }
 
 - (void)drawRect:(CGRect)rect
