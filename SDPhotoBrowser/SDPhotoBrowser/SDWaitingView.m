@@ -34,10 +34,14 @@
 - (void)setProgress:(CGFloat)progress
 {
     _progress = progress;
-    [self setNeedsDisplay];
-    if (progress >= 1) {
-        [self removeFromSuperview];
-    }
+    
+    //回到主线程更新UI
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setNeedsDisplay];
+        if (progress >= 1) {
+            [self removeFromSuperview];
+        }
+    });
 }
 
 - (void)drawRect:(CGRect)rect

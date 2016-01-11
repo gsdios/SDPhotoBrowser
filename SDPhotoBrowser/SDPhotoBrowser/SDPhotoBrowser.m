@@ -177,6 +177,13 @@
     NSInteger currentIndex = currentImageView.tag;
     
     UIView *sourceView = self.sourceImagesContainerView.subviews[currentIndex];
+    
+    // 如果是UICollectionView 则 currentIndex 为 NSIndexPath
+    if ([self.sourceImagesContainerView isKindOfClass:[UICollectionView class]]){
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:currentIndex inSection:0];
+        sourceView = [(UICollectionView * )self.sourceImagesContainerView cellForItemAtIndexPath:indexPath];
+    }
     CGRect targetTemp = [self.sourceImagesContainerView convertRect:sourceView.frame toView:self];
     
     UIImageView *tempView = [[UIImageView alloc] init];
@@ -275,6 +282,12 @@
 - (void)showFirstImage
 {
     UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentImageIndex];
+    // 如果是UICollectionView 则 self.currentImageIndex 为 NSIndexPath
+    if ([self.sourceImagesContainerView isKindOfClass:[UICollectionView class]]){
+        
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.currentImageIndex inSection:0];
+        sourceView = [(UICollectionView * )self.sourceImagesContainerView cellForItemAtIndexPath:indexPath];
+    }
     CGRect rect = [self.sourceImagesContainerView convertRect:sourceView.frame toView:self];
     
     UIImageView *tempView = [[UIImageView alloc] init];
