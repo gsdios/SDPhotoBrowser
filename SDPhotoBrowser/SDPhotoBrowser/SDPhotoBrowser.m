@@ -176,10 +176,6 @@
     SDBrowserImageView *currentImageView = (SDBrowserImageView *)recognizer.view;
     NSInteger currentIndex = currentImageView.tag;
     
-//    UIView *sourceView = self.sourceImagesContainerView.subviews[currentIndex];
-    
-    
-    //修改了当图片来源为collectionviewcell的时候cell复用，图片来源位置不正确的问题
     UIView *sourceView = nil;
     if ([self.sourceImagesContainerView isKindOfClass:UICollectionView.class]) {
         UICollectionView *view = (UICollectionView *)self.sourceImagesContainerView;
@@ -288,12 +284,9 @@
 
 - (void)showFirstImage
 {
-//    UIView *sourceView = self.sourceImagesContainerView.subviews[self.currentImageIndex];
-    //修改了当图片来源为collectionviewcell的时候cell复用，图片返回位置不正确的问题
     UIView *sourceView = nil;
     
     if ([self.sourceImagesContainerView isKindOfClass:UICollectionView.class]) {
-        
         UICollectionView *view = (UICollectionView *)self.sourceImagesContainerView;
         NSIndexPath *path = [NSIndexPath indexPathForItem:self.currentImageIndex inSection:0];
         sourceView = [view cellForItemAtIndexPath:path];
