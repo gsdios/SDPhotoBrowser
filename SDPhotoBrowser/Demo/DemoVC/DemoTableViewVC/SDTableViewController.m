@@ -7,8 +7,10 @@
 //
 
 #import "SDTableViewController.h"
-#import "SDPhotoGroup.h"
+#import "SDDemoCell.h"
 #import "SDPhotoItem.h"
+
+#import "SDCollectionViewController.h"
 
 @interface SDTableViewController ()
 
@@ -17,15 +19,6 @@
 @end
 
 @implementation SDTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -57,12 +50,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *ID = @"photo";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    SDDemoCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        cell = [[SDDemoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    SDPhotoGroup *photoGroup = [[SDPhotoGroup alloc] init];
     
     NSMutableArray *temp = [NSMutableArray array];
     [_srcStringArray enumerateObjectsUsingBlock:^(NSString *src, NSUInteger idx, BOOL *stop) {
@@ -71,10 +63,14 @@
         [temp addObject:item];
     }];
     
-    photoGroup.photoItemArray = [temp copy];
-    [cell.contentView addSubview:photoGroup];
+    cell.photosGroup.photoItemArray = [temp copy];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.navigationController pushViewController:[SDCollectionViewController demoCollectionViewController] animated:YES];
 }
 
 
