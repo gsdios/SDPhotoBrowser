@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		486409961CA6B6D80044A09E /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 486409951CA6B6D80044A09E /* Launch Screen.storyboard */; };
 		9973FAB21A824A1E0089A512 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9973FAB11A824A1E0089A512 /* Foundation.framework */; };
 		9973FAB41A824A1E0089A512 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9973FAB31A824A1E0089A512 /* CoreGraphics.framework */; };
 		9973FAB61A824A1E0089A512 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9973FAB51A824A1E0089A512 /* UIKit.framework */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		486409951CA6B6D80044A09E /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		9973FAAE1A824A1E0089A512 /* SDPhotoBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SDPhotoBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9973FAB11A824A1E0089A512 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9973FAB31A824A1E0089A512 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -179,6 +181,7 @@
 		9973FAB71A824A1E0089A512 /* SDPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
+				999B96EA1AA4A1C000099735 /* SDPhotoBrowser */,
 				9973FB221A8254FF0089A512 /* Other */,
 				9973FB1E1A824C8B0089A512 /* Model */,
 				9973FB1A1A824B300089A512 /* View */,
@@ -196,6 +199,7 @@
 				9973FABA1A824A1E0089A512 /* InfoPlist.strings */,
 				9973FABD1A824A1E0089A512 /* main.m */,
 				9973FABF1A824A1E0089A512 /* SDPhotoBrowser-Prefix.pch */,
+				486409951CA6B6D80044A09E /* Launch Screen.storyboard */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -232,7 +236,6 @@
 		9973FAED1A824ACB0089A512 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
-				999B96EA1AA4A1C000099735 /* SDPhotoBrowser */,
 				999B96B61AA4A11E00099735 /* SDWebImage */,
 			);
 			name = Lib;
@@ -398,6 +401,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				486409961CA6B6D80044A09E /* Launch Screen.storyboard in Resources */,
 				9973FACA1A824A1F0089A512 /* Images.xcassets in Resources */,
 				9973FABC1A824A1E0089A512 /* InfoPlist.strings in Resources */,
 			);
