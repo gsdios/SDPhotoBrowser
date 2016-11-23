@@ -336,6 +336,12 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (scrollView.contentOffset.x + _scrollView.bounds.size.width * 0.5<0) {
+        return;
+    }
+    if (scrollView.contentOffset.x + _scrollView.bounds.size.width * 0.5>_scrollView.subviews.count*_scrollView.bounds.size.width) {
+        return;
+    }
     int index = (scrollView.contentOffset.x + _scrollView.bounds.size.width * 0.5) / _scrollView.bounds.size.width;
     
     // 有过缩放的图片在拖动一定距离后清除缩放
