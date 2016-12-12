@@ -83,7 +83,9 @@ static NSString * const reuseIdentifier = @"Cell";
     SDPhotoBrowser *photoBrowser = [SDPhotoBrowser new];
     photoBrowser.delegate = self;
     photoBrowser.currentImageIndex = indexPath.item;
+    photoBrowser.desc = @"dddsdsd";
     photoBrowser.imageCount = self.modelsArray.count;
+    
     photoBrowser.sourceImagesContainerView = self.collectionView;
     
     [photoBrowser show];
