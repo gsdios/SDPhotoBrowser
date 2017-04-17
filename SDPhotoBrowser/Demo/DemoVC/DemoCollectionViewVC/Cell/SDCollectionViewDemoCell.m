@@ -22,6 +22,17 @@
 - (void)setupView
 {
     UIImageView *imageView = [UIImageView new];
+    
+    [imageView setContentScaleFactor:[[UIScreen mainScreen] scale]];
+    
+    imageView.contentMode =  UIViewContentModeScaleAspectFill;
+    
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+    
+    imageView.clipsToBounds  = YES;
+    
+    imageView.userInteractionEnabled = YES;
+    
     [self.contentView addSubview:imageView];
     self.imageView = imageView;
     

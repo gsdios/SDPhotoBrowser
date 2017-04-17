@@ -419,6 +419,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = GSD;
 				TargetAttributes = {
+					9973FAAD1A824A1E0089A512 = {
+						DevelopmentTeam = 88KK5WSQ3V;
+					};
 					9973FACE1A824A1F0089A512 = {
 						TestTargetID = 9973FAAD1A824A1E0089A512;
 					};
@@ -615,6 +618,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 88KK5WSQ3V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SDPhotoBrowser/Others/SDPhotoBrowser-Prefix.pch";
 				INFOPLIST_FILE = "SDPhotoBrowser/Others/SDPhotoBrowser-Info.plist";
@@ -629,6 +633,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = 88KK5WSQ3V;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SDPhotoBrowser/Others/SDPhotoBrowser-Prefix.pch";
 				INFOPLIST_FILE = "SDPhotoBrowser/Others/SDPhotoBrowser-Info.plist";
