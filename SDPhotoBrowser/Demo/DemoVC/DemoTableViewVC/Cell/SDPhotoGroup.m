@@ -24,7 +24,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // 清除图片缓存，便于测试
+        // 清除图片缓存，便于测试 
 //        [[SDWebImageManager sharedManager].imageCache clearDisk];
     }
     return self;

@@ -33,6 +33,8 @@
     
     imageView.userInteractionEnabled = YES;
     
+    
+    
     [self.contentView addSubview:imageView];
     self.imageView = imageView;
     
