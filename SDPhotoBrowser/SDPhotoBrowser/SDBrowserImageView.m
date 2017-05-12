@@ -192,12 +192,14 @@
         UIImageView *zoomingImageView = [[UIImageView alloc] initWithImage:self.image];
         CGSize imageSize = zoomingImageView.image.size;
         CGFloat imageViewH = self.bounds.size.height;
+        CGFloat imageViewW = self.bounds.size.width; //1. 获取图片宽度
         if (imageSize.width > 0) {
             imageViewH = self.bounds.size.width * (imageSize.height / imageSize.width);
+            imageViewW = imageViewH / imageSize.height * imageSize.width;
         }
-        zoomingImageView.bounds = CGRectMake(0, 0, self.bounds.size.width, imageViewH);
+        zoomingImageView.bounds = CGRectMake(0, 0, imageViewW, imageViewH); //2. 设置图片的宽度,而不是显示在 imageView 中.
         zoomingImageView.center = _zoomingScroolView.center;
-        zoomingImageView.contentMode = UIViewContentModeScaleAspectFit;
+        zoomingImageView.contentMode = UIViewContentModeScaleToFill; //3. 修复缩放后会比例失调的问题
         _zoomingImageView = zoomingImageView;
         [_zoomingScroolView addSubview:zoomingImageView];
         [self addSubview:_zoomingScroolView];
