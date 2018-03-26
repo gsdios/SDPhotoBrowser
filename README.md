@@ -2,10 +2,6 @@
 A image browser which is easy for using.
 非常简单易用的图片浏览器，模仿微博图片浏览器动感效果，综合了图片展示和存储等多项功能。
 
-### 我的公众号
-主要用于编程经验分享+SD系列开源库答疑解惑，有需要的请关注！
- ![](https://github.com/gsdios/SDCycleScrollView/blob/master/qrcode_for_gh_a69e5c4e13c4_430.jpg?raw=true)
-
 1. 创建SDPhotoBrowser实例
 
   SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
