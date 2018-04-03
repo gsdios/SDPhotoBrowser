@@ -10,6 +10,7 @@
 #import "SDPhotoItem.h"
 #import "UIButton+WebCache.h"
 #import "SDPhotoBrowser.h"
+#import "UIImageView+WebCache.h"
 
 #define SDPhotoGroupImageMargin 15
 
@@ -23,7 +24,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // 清除图片缓存，便于测试
+        // 清除图片缓存，便于测试 
 //        [[SDWebImageManager sharedManager].imageCache clearDisk];
     }
     return self;
@@ -36,14 +37,25 @@
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     [photoItemArray enumerateObjectsUsingBlock:^(SDPhotoItem *obj, NSUInteger idx, BOOL *stop) {
-        UIButton *btn = [[UIButton alloc] init];
-        [btn sd_setImageWithURL:[NSURL URLWithString:obj.thumbnail_pic] forState:UIControlStateNormal];
+        UIImageView *imgView = [[UIImageView alloc] init];
+        [imgView sd_setImageWithURL:[NSURL URLWithString:obj.thumbnail_pic]];
+        
+        [imgView setContentScaleFactor:[[UIScreen mainScreen] scale]];
+        
+        imgView.contentMode =  UIViewContentModeScaleAspectFill;
+        
+        imgView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
+        
+        imgView.clipsToBounds  = YES;
+        
+        imgView.userInteractionEnabled = YES;
+        
+        imgView.tag = idx;
+        
+        [imgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(buttonClick:)]];
         
         
-        btn.tag = idx;
-        
-        [btn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:btn];
+        [self addSubview:imgView];
     }];
     
     long imageCount = photoItemArray.count;
@@ -62,22 +74,22 @@
     CGFloat w = 80;
     CGFloat h = 80;
     
-    [self.subviews enumerateObjectsUsingBlock:^(UIButton *btn, NSUInteger idx, BOOL *stop) {
+    [self.subviews enumerateObjectsUsingBlock:^(UIImageView *imgView, NSUInteger idx, BOOL *stop) {
         
         long rowIndex = idx / perRowImageCount;
         int columnIndex = idx % perRowImageCount;
         CGFloat x = columnIndex * (w + SDPhotoGroupImageMargin);
         CGFloat y = rowIndex * (h + SDPhotoGroupImageMargin);
-        btn.frame = CGRectMake(x, y, w, h);
+        imgView.frame = CGRectMake(x, y, w, h);
     }];
 }
 
-- (void)buttonClick:(UIButton *)button
+- (void)buttonClick:(UITapGestureRecognizer *)gestureRecognizer
 {
     SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
     browser.sourceImagesContainerView = self; // 原图的父控件
     browser.imageCount = self.photoItemArray.count; // 图片总数
-    browser.currentImageIndex = button.tag;
+    browser.currentImageIndex = gestureRecognizer.view.tag;
     browser.delegate = self;
     [browser show];
     
@@ -88,7 +100,7 @@
 // 返回临时占位图片（即原来的小图）
 - (UIImage *)photoBrowser:(SDPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
 {
-    return [self.subviews[index] currentImage];
+    return [self.subviews[index] image];
 }
 
 
