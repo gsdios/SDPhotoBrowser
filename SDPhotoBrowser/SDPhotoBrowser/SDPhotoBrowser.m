@@ -196,6 +196,10 @@
     
     if (!currentImageView.image) { // 防止 因imageview的image加载失败 导致 崩溃
         h = self.bounds.size.height;
+    }else   if (currentImageView.image.size.width==0) {
+    // 防止 因imageview的image加载失败 导致 崩溃
+        h=0;
+    
     }
     
     tempView.bounds = CGRectMake(0, 0, self.bounds.size.width, h);
