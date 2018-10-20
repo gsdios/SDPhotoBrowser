@@ -13,5 +13,6 @@
 
 @property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, assign) int mode;
+@property (nonatomic, assign) CGFloat lineWidth;
 
 @end
