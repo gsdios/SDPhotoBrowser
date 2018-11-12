@@ -23,6 +23,9 @@
 
 //  =============================================
 
+// 防止数组越界
+#define kIndex(index) index <= _scrollView.subviews.count - 1 ? index : _scrollView.subviews.count - 1
+
 @implementation SDPhotoBrowser 
 {
     UIScrollView *_scrollView;
@@ -87,7 +90,7 @@
 - (void)saveImage
 {
     int index = _scrollView.contentOffset.x / _scrollView.bounds.size.width;
-    UIImageView *currentImageView = _scrollView.subviews[index];
+    UIImageView *currentImageView = _scrollView.subviews[kIndex(index)];
     
     UIImageWriteToSavedPhotosAlbum(currentImageView.image, self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
     
@@ -156,7 +159,7 @@
 // 加载图片
 - (void)setupImageOfImageViewForIndex:(NSInteger)index
 {
-    SDBrowserImageView *imageView = _scrollView.subviews[index];
+    SDBrowserImageView *imageView = _scrollView.subviews[kIndex(index)];
     self.currentImageIndex = index;
     if (imageView.hasLoadedImage) return;
     if ([self highQualityImageURLForIndex:index]) {
@@ -342,7 +345,7 @@
     CGFloat margin = 150;
     CGFloat x = scrollView.contentOffset.x;
     if ((x - index * self.bounds.size.width) > margin || (x - index * self.bounds.size.width) < - margin) {
-        SDBrowserImageView *imageView = _scrollView.subviews[index];
+        SDBrowserImageView *imageView = _scrollView.subviews[kIndex(index)];
         if (imageView.isScaled) {
             [UIView animateWithDuration:0.5 animations:^{
                 imageView.transform = CGAffineTransformIdentity;
@@ -354,7 +357,8 @@
     
     
     if (!_willDisappear) {
-        _indexLabel.text = [NSString stringWithFormat:@"%d/%ld", index + 1, (long)self.imageCount];
+        // 当前图片索引不能超过图片数量
+        _indexLabel.text = [NSString stringWithFormat:@"%d/%ld", index < _scrollView.subviews.count ? index + 1 : index, (long)self.imageCount];
     }
     [self setupImageOfImageViewForIndex:index];
 }
