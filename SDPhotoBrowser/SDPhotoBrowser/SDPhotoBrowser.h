@@ -29,7 +29,8 @@
 @property (nonatomic, weak) UIView *sourceImagesContainerView;
 @property (nonatomic, assign) NSInteger currentImageIndex;
 @property (nonatomic, assign) NSInteger imageCount;
-
+@property (nonatomic, assign)BOOL enableToolbar;//是否启用工具栏
+@property (nonatomic, strong) NSString * desc;//图片描述
 @property (nonatomic, weak) id<SDPhotoBrowserDelegate> delegate;
 
 - (void)show;

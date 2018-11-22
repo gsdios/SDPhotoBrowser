@@ -30,6 +30,7 @@
     UILabel *_indexLabel;
     UIButton *_saveButton;
     UIActivityIndicatorView *_indicatorView;
+    UITextView * txtDesc;
     BOOL _willDisappear;
 }
 
@@ -45,16 +46,31 @@
 
 - (void)didMoveToSuperview
 {
-    [self setupScrollView];
     
-    [self setupToolbars];
+    [self setupScrollView];
+    if (_enableToolbar) {
+        [self setupToolbars];
+    }
+    
+    [self setupDesc];
 }
 
 - (void)dealloc
 {
     [[UIApplication sharedApplication].keyWindow removeObserver:self forKeyPath:@"frame"];
 }
-
+//初始化描述
+-(void)setupDesc{
+    txtDesc = [[UITextView alloc] initWithFrame:CGRectMake(0.0, self.frame.size.height - 100.0, self.frame.size.width, 100.0)];
+    txtDesc.backgroundColor = [UIColor clearColor];
+    txtDesc.font = [UIFont systemFontOfSize:18.0];
+    txtDesc.textColor = [UIColor whiteColor];
+    txtDesc.text = _desc;
+    txtDesc.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:txtDesc];
+    
+}
+//初始化工具栏
 - (void)setupToolbars
 {
     // 1. 序标
